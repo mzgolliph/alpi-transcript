@@ -94,8 +94,9 @@ def get_transcript_from_file(file_name, transposed_data):
         if language in transposed_data:
             # Get the transcript for the given id
             language_data = transposed_data[language]
+            language_data_de = transposed_data['de']
             if file_id in language_data:
-                return language_data[file_id]
+                return language_data[file_id], language_data_de[file_id]
             else:
                 return f"Transcript not found for id {file_id}."
         else:
@@ -143,8 +144,9 @@ for folder, file in sampled_files:
     print(f"Processing file: {file} in folder: {folder}")
     file_path = os.path.join(test_files_path, folder, file)
     
-    ground_truth = get_transcript_from_file(file, transcripts)
+    ground_truth, ground_truth_de = get_transcript_from_file(file, transcripts)
     print(f"Ground Truth: {ground_truth}")
+    print(f"Ground Truth DE: {ground_truth_de}")
     
     # Transcribe
     transcript = transcribe_audio(file_path)
@@ -155,13 +157,13 @@ for folder, file in sampled_files:
     print(f"Improved Transcript: {improved_transcript}")
 
     # Compute WER and CER
-    wer = word_error_rate(ground_truth, improved_transcript)
-    cer = char_error_rate(ground_truth, improved_transcript)
+    wer = word_error_rate(ground_truth_de, improved_transcript)
+    cer = char_error_rate(ground_truth_de, improved_transcript)
     
     test_results.append({
         "folder": folder,
         "file": file,
-        "ground_truth": ground_truth,
+        "ground_truth": ground_truth_de,
         "transcription": improved_transcript,
         "wer": wer,
         "cer": cer

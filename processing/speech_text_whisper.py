@@ -56,7 +56,7 @@ def transcribe_audio(file_path):
     file=audio_file,
     model="whisper-1",
     response_format="text",
-    prompt="Transcribe the following Swiss German audio file. Please provide a clean and accurate transcription.",
+    prompt="This is a Swiss German audio recording. Please transcribe it into clean and standard written German. Correct any slang, regional expressions, or unclear speech where necessary for clarity."
     )
 
     return transcription
